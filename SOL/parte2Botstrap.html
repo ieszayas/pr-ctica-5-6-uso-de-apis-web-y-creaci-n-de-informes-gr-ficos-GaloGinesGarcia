@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Mejorada</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="estilo1Botstrap.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CarMains</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+             
+            <div id="reloj" class="reloj"></div> 
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#formulario">Formulario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tabla">Tabla</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#carrusel">Galería</a></li>
+                    <li class="nav-item"><button type="button" onclick="cambiarModo()" id="modoBtn" class="btn btn-primary w-100">Nocturno</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div id="mensajeEmergente" class="mensajeEmergente">Todos los campos han sido eliminados.</div>
+            <div id="mensajeEmergenteDos" class="mensajeEmergenteDos">Formulario enviado correctamente.</div>
+            <div id="mensajeEmergenteTres" class="mensajeEmergenteTres">Campos incorrectos.</div>
+
+            <div class="col-md-5 mb-5" id="formulario">
+                <h2 class="mb-4 text-center">Formulario de Contacto</h2>
+                
+                <form>
+                    <div class="mb-3">
+                        <label for="colorSelector" class="form-label">Selecciona el color de la tabla</label>
+                        <input type="color" id="colorSelector" class="form-control" onchange="cambiarColorTabla(event)">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="Escribe tu nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Apellido" class="form-label">Apellido</label>
+                        <input type="text" id="Apellido" class="form-control" placeholder="Escribe tu apellido" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha-alta" class="form-label">Fecha de alta</label>
+                        <input type="date" id="fecha-alta" class="form-control" required>
+                    </div>
+
+                    <!-- Selector de Marca -->
+                    <div class="mb-3">
+                        <label for="marcaSelector" class="form-label">Selecciona una marca</label>
+                        <select id="marcaSelector" class="form-select">
+                            <option value="bmw">BMW</option>
+                            <option value="audi">Audi</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="porsche">Porsche</option>
+                            <option value="toyota">Toyota</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="button" onclick="actualizarTabla()" class="btn btn-primary w-100">Buscar Modelos</button>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" onclick="enviarDatosFormulario('nombre', 'Apellido', 'fecha-alta')" class="btn btn-primary w-100">Enviar</button>
+                        <button type="submit" onclick="borrarCamposFormulario('nombre', 'Apellido', 'fecha-alta')" class="btn btn-primary w-100">Borrar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-7">
+                <section id="tabla" class="mb-5">
+                    <h2 class="mb-4 text-center">Modelos de la Marca Seleccionada</h2>
+
+                    <div class="table-responsive tablaCustom">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Modelo</th>
+                                    <th>Año</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaModelos">
+                                <!-- Aquí se insertarán los modelos dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="carrusel" class="mb-5">
+                    <h2 class="mb-4 text-center">Galería de Imágenes</h2>
+                    <div class="carousel-container">
+                        <div class="carousel-images">
+                            <div class="carousel-item">
+                                <img src="https://picsum.photos/800/400?random=1" class="d-block w-100" alt="Imagen aleatoria 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://picsum.photos/800/400?random=2" class="d-block w-100" alt="Imagen aleatoria 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://picsum.photos/800/400?random=3" class="d-block w-100" alt="Imagen aleatoria 3">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>2025 Mi Página Web.</p>
+    </footer>
+
+    <script src="script1.js"></script>
+</body>
+
+</html>
