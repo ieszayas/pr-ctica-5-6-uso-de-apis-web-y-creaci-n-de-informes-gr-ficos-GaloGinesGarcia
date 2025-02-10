@@ -150,40 +150,102 @@ setInterval(actualizarReloj, 1000);
 
 actualizarReloj();
 
+// Esta función genera el gráfico usando Chart.js
+// Función para generar el gráfico con los modelos por serie
+// Función para generar el gráfico
+// Función para generar el gráfico
+function generarGrafico(modelos) {
+    // Destruir el gráfico anterior si existe
+    const ctx = document.getElementById("graficoModelos").getContext("2d");
+    if (window.chartInstance) {
+        window.chartInstance.destroy();
+    }
+
+    // Crear un objeto para contar los modelos por serie
+    const modelosPorSerie = {};
+
+    // Clasificar los modelos por su nombre de serie
+    modelos.forEach((modelo) => {
+        const serie = modelo.model_name; // Usamos el nombre del modelo como nombre de la serie
+
+        // Si la serie no existe en el objeto, inicializamos su contador en 0
+        if (!modelosPorSerie[serie]) {
+            modelosPorSerie[serie] = 0;
+        }
+
+        // Incrementamos el contador para la serie correspondiente
+        modelosPorSerie[serie]++;
+    });
+
+    // Preparar los datos para el gráfico
+    const labels = Object.keys(modelosPorSerie); // Nombres de las series
+    const datos = Object.values(modelosPorSerie); // Cantidad de modelos por serie
+
+    // Crear el gráfico en el canvas
+    window.chartInstance = new Chart(ctx, {
+        type: 'bar', // Tipo de gráfico (barras)
+        data: {
+            labels: labels, // Nombres de las series
+            datasets: [{
+                label: 'Cantidad de Modelos por Serie',
+                data: datos, // Cantidad de modelos por serie
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Función para cargar los modelos de la marca seleccionada
 async function cargarModelos(marca) {
     if (!marca) {
         alert("Por favor, selecciona una marca.");
         return;
     }
 
-    // URL de la API que deseas consultar
     const urlAPI = `https://www.carqueryapi.com/api/0.3/?cmd=getModels&make=${marca}`;
-
-    // URL del proxy All Origins
     const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(urlAPI)}`;
 
     try {
         const response = await fetch(proxyURL);
+
+        // Comprobar si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error(`Error al obtener los datos: ${response.statusText}`);
+        }
+
         const data = await response.json();
 
         console.log("Respuesta de la API:", data);
 
         if (data.contents) {
-            const modelos = JSON.parse(data.contents).Models;  // Procesar la respuesta JSON correctamente
+            const modelos = JSON.parse(data.contents).Models;
 
             if (modelos && modelos.length > 0) {
                 const tablaBody = document.getElementById("tablaModelos");
                 tablaBody.innerHTML = "";  // Limpiar la tabla antes de agregar nuevas filas
 
                 modelos.forEach((modelo, index) => {
+                    // Mostrar solo el nombre del modelo en la tabla
                     const fila = document.createElement("tr");
                     fila.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${modelo.model_name}</td>
-                        <td>${modelo.model_year}</td>
+                        <td>Año no disponible</td> <!-- No preocuparse por el año -->
                     `;
                     tablaBody.appendChild(fila);
                 });
+
+                // Generar el gráfico con los modelos clasificados por serie
+                generarGrafico(modelos);
             } else {
                 alert("No se encontraron modelos para esta marca.");
             }
@@ -192,15 +254,17 @@ async function cargarModelos(marca) {
         }
     } catch (error) {
         console.error("Error obteniendo modelos:", error);
-        alert("Ocurrió un error al obtener los modelos.");
+        alert("Ocurrió un error al obtener los modelos. Detalles: " + error.message);
     }
 }
 
+// Función para actualizar la tabla y el gráfico cuando se selecciona una nueva marca
 function actualizarTabla() {
     const marcaSeleccionada = document.getElementById("marcaSelector").value.toLowerCase();
     console.log("Marca seleccionada:", marcaSeleccionada);
     cargarModelos(marcaSeleccionada);
 }
+
 //Uso de la api de coches
 /*async function cargarVehiculos() {
     try {

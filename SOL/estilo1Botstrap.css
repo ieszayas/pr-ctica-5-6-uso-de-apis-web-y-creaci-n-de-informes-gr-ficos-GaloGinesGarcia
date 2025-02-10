@@ -103,6 +103,20 @@ form input, form select, form button {
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
 }
 
+.grafico-container {
+    width: 80%;   /* Ancho del contenedor */
+    height: 400px; /* Altura fija del contenedor */
+    display: flex;
+    justify-content: center;  /* Centrado del canvas dentro del contenedor */
+    align-items: center;      /* Centrado vertical del canvas */
+}
+
+/* Canvas ajustado al tamaño del contenedor */
+#graficoModelos {
+    width: 100%;
+    height: 100%;
+}
+
 .carousel-container {
         position: relative;
         width: 100%;
